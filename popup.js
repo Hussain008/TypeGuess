@@ -1,4 +1,4 @@
-var definition='';
+var definition='hmm';
 var pageText = 'hi';
 
 
@@ -30,6 +30,10 @@ function selectRandomWord ( words ) {
 function start(){
 	//split words by space
 	words = pageText.split(" ") ;
+	word=''
+	//using regex to check if the current word only consists of alphabets
+	var letters = '/^[A-Za-z]+$/'
+	while(word.length<=1 &&  !word.match(letters))
 	word = selectRandomWord(words);
 
 	//the api call
@@ -39,10 +43,18 @@ function start(){
              xhr.setRequestHeader("Authorization", "Token e4df540ec3454d5faa14ccf851905a339615dbb3")
         }, success: function(data){
         	if(data['definitions']===undefined)
-        		return;
+        		{
+        			start();
+        			return;
+        		}
         	definition =  data['definitions'][0]['definition'];
+        	console.log(definition);
         	setDefinition();
-        }})
+        },error: function(XMLHttpRequest, textStatus, errorThrown) { 
+        console.log("Status: " + textStatus); console.log("Error: " + errorThrown); 
+        start();
+    }  
+    })
 
 }
 
@@ -58,7 +70,14 @@ distance.addEventListener("keyup", calcDist);
 
 function calcDist(){
 	userInput  = distance.value ;
-	document.getElementById('levisteinDist').innerHTML = 'You are  <b>  ' + levenshteinDist(userInput , word , 0, 0) + '  </b>  distance away' ;
+	var editDist = levenshteinDist(userInput.toLowerCase() , word.toLowerCase() , 0, 0)
+	document.getElementById('levisteinDist').innerHTML = 'You are  distance away : <b>'+editDist+'</b>' ;
+	if(editDist==0){
+		alert('CORRECT');
+		distance.value=''
+		start();
+
+	}
 }
 
 function levenshteinDist(str1,str2){
