@@ -4,9 +4,53 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<title>popup</title>
 </head>
+<style type="text/css">
+	*{
+		color: white;
+	}
+	body{
+		background-color: black;
+	}
+	input{
+		border: none;
+  		border-bottom: 2px solid white;
+  		background-color: black;
+
+	}
+	
+	button{
+		
+		background-color:black;
+  		border-radius: 3px;	
+  		border-bottom-color: white;
+	}
+	div{
+		display: flex;
+  		justify-content: center;
+  		align-items: center;
+	}
+
+	#defitnition{
+		border:none;
+		border-top: 2px solid white;
+	}
+
+</style>
 <body>
-<h1>CHOOOOO CHOOOO!</h1>
-<div id="header"></div>
+
+<div id="defitnition">
+	Guess the word by it definition ! 
+</div><br>
+<div id="inputbox">
+	<input type="text" id="Guess" placeholder="Type here"><br><br>
+	<button onclick="check()">Guess</button>
+</div>
+<div id="levisteinDist">
+	You are X words away .
+</div>
+
+
+
 <script type="text/javascript" src="popup.js"></script>
 
 </body>
