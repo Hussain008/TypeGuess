@@ -2,7 +2,7 @@
 	"manifest_version":2 ,
 	"name": "TypeGuess",
 	"description" : "A Game where you have to guess a word from your current page given its definition.",
-	"version": "1",
+	"version": "1.0",
 	"icons": { "128": "howl.png" },
 	"permissions": [
       "storage"

@@ -30,12 +30,27 @@ function selectRandomWord ( words ) {
 function start(){
 	//split words by space
 	words = pageText.split(" ") ;
-	word=''
+	word='-'
 	//using regex to check if the current word only consists of alphabets
-	var letters = '/^[A-Za-z]+$/'
-	while(word.length<=1 &&  !word.match(letters))
+	var letters = /^[A-Za-z]+$/
+	console.log(word);
+	while(word.length<=1 ||  word.match(/^[A-Za-z]+$/)==null ){
 	word = selectRandomWord(words);
+	console.log(word);
+	}
 
+	chrome.storage.local.set({'word_selected': word }, function() {
+      console.log('word has been Selected');
+    });
+
+ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    chrome.tabs.sendMessage(tabs[0].id,{Message: "word has been selected"}, function (response) {
+            ;
+        })
+	}) ;
+
+
+	console.log('beforeAPICALL')
 	//the api call
 	$.ajax({
         url: 'https://owlbot.info/api/v4/dictionary/'+word,
@@ -55,6 +70,7 @@ function start(){
         start();
     }  
     })
+    console.log('afterAPIcALL')
 
 }
 
@@ -74,8 +90,22 @@ function calcDist(){
 	document.getElementById('levisteinDist').innerHTML = 'You are  distance away : <b>'+editDist+'</b>' ;
 	if(editDist==0){
 		alert('CORRECT');
-		distance.value=''
-		start();
+		distance.value='';
+		
+		chrome.storage.local.set({'word_selected': 'F' }, function() 
+		{
+      	console.log('word has reset');
+  		});
+
+		chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    chrome.tabs.sendMessage(tabs[0].id,{Message: "word has been de-selected"}, function (response) {
+            ;
+        })
+	}) ;
+
+		window.close();
+
+		// start();
 
 	}
 }
