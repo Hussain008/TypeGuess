@@ -13,7 +13,7 @@ Download the repo.
 - Use the input field to guess the word . 
 - You can scroll through the page if you want to look for the word. (Avoid clicking anywhere as it will cause the popup to close)
 
- ![TypeGuess_demo](img/typeguess.gif)
+ ![TypeGuess_demo](img/typeguess_final.gif)
 
 
 
