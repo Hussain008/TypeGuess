@@ -2,6 +2,7 @@ console.log("This is content script running");
 
 var superImportantText = document.body.innerText ;
 
+//setting global/shared varialble as the whole content of the page
 chrome.storage.local.set({'content': superImportantText}, function() {
       console.log('Settings saved');
     });
@@ -12,8 +13,9 @@ chrome.storage.local.set({'word_selected': 'F'}, function() {
     });
 
 
-//Run() ;
 
+
+//chrome API for getting message from the popup.js that a word has beem selected
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
 
@@ -27,18 +29,18 @@ chrome.runtime.onMessage.addListener(
 	}else{
 		console.log("we're here");
 		reloadThePage();
-		
-		// showHalfText(document.body);
+
 	}
     	sendResponse({});
     	return true;
-      // sendResponse({farewell: "goodbye"});
+
   });
 
 
 word_selected='-';
 
 
+//we hide about 80% of text that is not the selected word
 function hideHalfText(element){
 	if(element.hasChildNodes()){
 		element.childNodes.forEach(hideHalfText);
@@ -55,20 +57,6 @@ function hideHalfText(element){
 
 }
 
-// function showHalfText(element){
-// 	if(element.hasChildNodes()){
-// 		element.childNodes.forEach(showHalfText);
-// 	}else if(element.tagName == 'SPAN'){
-// 		// to do something here that will also let me hide the text and also retrive it back
-// 		console.log('in here '+element.textContent);
-// 		const newElement = document.createElement('span')
-//       	newElement.innerHTML = element.textContent.replace(/.*/gi, '<span style="background-color : white ; color: black ;">'+element.textContent+'</span>');
-//       	element.replaceWith(newElement)
-      
-		
-// 	}	//caesar cipher with random key everytime
-
-// }
 
 function reloadThePage(){
 	location.reload(true);

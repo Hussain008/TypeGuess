@@ -34,18 +34,18 @@ function start(){
 	//using regex to check if the current word only consists of alphabets
 	var letters = /^[A-Za-z]+$/
 	console.log(word);
-	while(word.length<=1 ||  word.match(/^[A-Za-z]+$/)==null ){
+	while(word.length<=2 ||  word.match(/^[A-Za-z]+$/)==null ){
 	word = selectRandomWord(words);
 	console.log(word);
 	}
-
+	//setting the global word selected
 	chrome.storage.local.set({'word_selected': word }, function() {
       console.log('word has been Selected');
     });
 
  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     chrome.tabs.sendMessage(tabs[0].id,{Message: "word has been selected"}, function (response) {
-            ;
+            // this is to trigger the chrome api to content.js;
         })
 	}) ;
 
@@ -84,6 +84,7 @@ function setDefinition(){
 var distance = document.getElementById('Guess') ;
 distance.addEventListener("keyup", calcDist);
 
+//driver function to calculate edit distance
 function calcDist(){
 	userInput  = distance.value ;
 	var editDist = levenshteinDist(userInput.toLowerCase() , word.toLowerCase() , 0, 0)
@@ -97,6 +98,8 @@ function calcDist(){
       	console.log('word has reset');
   		});
 
+  		//after correct guess close and reload window
+
 		chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     chrome.tabs.sendMessage(tabs[0].id,{Message: "word has been de-selected"}, function (response) {
             ;
@@ -104,13 +107,11 @@ function calcDist(){
 	}) ;
 
 		window.close();
-
-		// start();
-
 	}
 }
 
 function levenshteinDist(str1,str2){
+	//dp array to cache values
 	dp  = new Array(str1.length);
 	for (var i = 0; i < str1.length; i++) {
 		dp[i]=new Array(str2.length);
@@ -121,6 +122,7 @@ function levenshteinDist(str1,str2){
 	return levenshteinDistHelper(str1,str2,0,0);
 }
 
+//edit distance helper function , checked from leetcode too for complete authenticity
 function levenshteinDistHelper(str1,str2,i,j){
 	if(i==str1.length){
 		return str2.length - j ;
